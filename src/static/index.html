@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pathfinder 1E Magic Item Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ Pathfinder 1E Magic Item Generator</h1>
+            <p class="subtitle">Genera oggetti magici unici basati su intelligenza artificiale e un database di 588 oggetti da Archives of Nethys</p>
+            <div id="stats" class="stats"></div>
+        </header>
+
+        <main>
+            <div class="tabs">
+                <button class="tab-button active" onclick="switchTab('generate')">Genera Oggetto</button>
+                <button class="tab-button" onclick="switchTab('search')">Cerca Oggetti</button>
+            </div>
+
+            <!-- Tab Genera Oggetto -->
+            <div id="generate-tab" class="tab-content active">
+                <div class="input-section">
+                    <label for="description">Descrivi l'oggetto magico che desideri creare:</label>
+                    <textarea 
+                        id="description" 
+                        placeholder="Es: Un anello che permette al portatore di respirare sott'acqua e comunicare con creature marine..."
+                        rows="5"
+                    ></textarea>
+                    <button onclick="generateItem()" class="btn-primary">
+                        <span class="btn-icon">✨</span>
+                        Genera Oggetto Magico
+                    </button>
+                </div>
+
+                <div id="loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Generazione in corso...</p>
+                </div>
+
+                <div id="results" class="results hidden">
+                    <div class="result-section">
+                        <h2>🎲 Oggetto Generato</h2>
+                        <div id="generated-item" class="generated-item"></div>
+                    </div>
+
+                    <div class="result-section">
+                        <h3>📚 Oggetti Simili di Riferimento</h3>
+                        <div id="similar-items" class="similar-items"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Cerca Oggetti -->
+            <div id="search-tab" class="tab-content">
+                <div class="input-section">
+                    <label for="search-query">Cerca oggetti magici esistenti:</label>
+                    <input 
+                        type="text" 
+                        id="search-query" 
+                        placeholder="Es: anelli di protezione, bacchette di fuoco, armature magiche..."
+                    >
+                    <button onclick="searchItems()" class="btn-primary">
+                        <span class="btn-icon">🔍</span>
+                        Cerca
+                    </button>
+                </div>
+
+                <div id="search-loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Ricerca in corso...</p>
+                </div>
+
+                <div id="search-results" class="search-results hidden"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by Sentence Transformers, Qdrant Vector Database, and OpenAI</p>
+            <p>Data source: <a href="https://www.aonprd.com/" target="_blank">Archives of Nethys</a></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
