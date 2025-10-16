@@ -1,5 +1,12 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+
 Flask==3.1.1
 flask-cors==6.0.0
 openai==2.4.0
 qdrant-client==1.15.1
+sentence-transformers==5.1.1
+torch
+numpy
+typing-extensions==4.11.0
+urllib3==1.26.18
 
