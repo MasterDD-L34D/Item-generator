@@ -209,15 +209,24 @@ const normalizeToolChoice = (
   return toolChoice;
 };
 
-const resolveApiUrl = () =>
-  ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0
-    ? `${ENV.forgeApiUrl.replace(/\/$/, "")}/v1/chat/completions`
-    : "https://forge.manus.im/v1/chat/completions";
+const resolveApiUrl = () => {
+  // Prima prova con OPENAI_API_BASE, poi fallback a forgeApiUrl
+  const baseUrl = ENV.openaiApiBase && ENV.openaiApiBase.trim().length > 0
+    ? ENV.openaiApiBase
+    : (ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0
+      ? ENV.forgeApiUrl
+      : "https://api.manus.im/v1");
+  
+  return `${baseUrl.replace(/\/$/, "")}/chat/completions`;
+};
 
 const assertApiKey = () => {
-  if (!ENV.forgeApiKey) {
+  // Prima prova con OPENAI_API_KEY, poi fallback a forgeApiKey
+  const apiKey = ENV.openaiApiKey || ENV.forgeApiKey;
+  if (!apiKey) {
     throw new Error("OPENAI_API_KEY is not configured");
   }
+  return apiKey;
 };
 
 const normalizeResponseFormat = ({
@@ -309,11 +318,13 @@ export async function invokeLLM(params: InvokeParams): Promise<InvokeResult> {
     payload.response_format = normalizedResponseFormat;
   }
 
+  const apiKey = assertApiKey();
+  
   const response = await fetch(resolveApiUrl(), {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      authorization: `Bearer ${ENV.forgeApiKey}`,
+      authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify(payload),
   });
