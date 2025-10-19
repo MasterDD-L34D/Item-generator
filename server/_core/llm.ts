@@ -210,12 +210,12 @@ const normalizeToolChoice = (
 };
 
 const resolveApiUrl = () => {
-  // Prima prova con OPENAI_API_BASE, poi fallback a forgeApiUrl
+  // Prima prova con OPENAI_API_BASE, poi fallback a forgeApiUrl, infine OpenAI
   const baseUrl = ENV.openaiApiBase && ENV.openaiApiBase.trim().length > 0
     ? ENV.openaiApiBase
     : (ENV.forgeApiUrl && ENV.forgeApiUrl.trim().length > 0
       ? ENV.forgeApiUrl
-      : "https://api.manus.im/v1");
+      : "https://api.openai.com/v1");
   
   return `${baseUrl.replace(/\/$/, "")}/chat/completions`;
 };

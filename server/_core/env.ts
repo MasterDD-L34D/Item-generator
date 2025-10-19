@@ -8,5 +8,5 @@ export const ENV = {
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
   openaiApiKey: process.env.OPENAI_API_KEY ?? "",
-  openaiApiBase: process.env.OPENAI_API_BASE ?? "https://api.manus.im/v1",
+  openaiApiBase: process.env.OPENAI_API_BASE ?? "https://api.openai.com/v1",
 };
