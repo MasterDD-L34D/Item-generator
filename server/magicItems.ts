@@ -24,9 +24,48 @@ export interface MagicItem {
 let cachedItems: MagicItem[] | null = null;
 
 /**
+ * Invalida la cache degli oggetti magici (utile per reload)
+ */
+export function invalidateCache() {
+  cachedItems = null;
+}
+
+/**
  * Carica gli oggetti magici dal file JSON.
  * Il file viene letto una sola volta e poi messo in cache.
  */
+/**
+ * Estrae il nome dell'oggetto dall'URL quando il campo name è generico
+ */
+function extractNameFromUrl(url: string): string {
+  try {
+    const match = url.match(/ItemName=([^&]+)/);
+    if (match && match[1]) {
+      return decodeURIComponent(match[1].replace(/\+/g, ' '));
+    }
+  } catch {
+    // Ignora errori
+  }
+  return '';
+}
+
+/**
+ * Normalizza un oggetto magico per migliorare la visualizzazione
+ */
+function normalizeItem(item: any): MagicItem {
+  const urlName = extractNameFromUrl(item.url || '');
+  
+  return {
+    ...item,
+    name: (item.name && item.name !== 'Magic Sets' && item.name !== 'N/A') 
+      ? item.name 
+      : urlName || 'Oggetto Magico',
+    description: (item.description && item.description !== 'N/A')
+      ? item.description
+      : `${item.slot || 'Slot sconosciuto'} • ${item.aura || 'Aura sconosciuta'} • CL ${item.cl || '?'}`,
+  };
+}
+
 export function loadMagicItems(): MagicItem[] {
   if (cachedItems) {
     return cachedItems;
@@ -36,7 +75,11 @@ export function loadMagicItems(): MagicItem[] {
     // Usa un percorso assoluto basato sulla root del progetto
     const dataPath = join(process.cwd(), 'server', 'data', 'all_magic_items.json');
     const fileContent = readFileSync(dataPath, 'utf-8');
-    cachedItems = JSON.parse(fileContent);
+    const rawItems = JSON.parse(fileContent);
+    
+    // Normalizza tutti gli oggetti
+    cachedItems = rawItems.map(normalizeItem);
+    
     console.log(`[MagicItems] Loaded ${cachedItems?.length || 0} magic items from ${dataPath}`);
     return cachedItems || [];
   } catch (error) {

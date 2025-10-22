@@ -64,12 +64,25 @@ export async function generateMagicItem(userPrompt: string): Promise<TournamentM
 REGOLE OBBLIGATORIE:
 1. Solo contenuto Paizo PF1e ufficiale (nessun 3PP)
 2. Prezzi secondo tabelle ufficiali Core Rulebook
-3. Costo crafting = Prezzo / 2
+3. Costo crafting = Prezzo / 2 (arrotondato per difetto)
 4. Aura e LI derivano dall'incantesimo principale
 5. Terminologia italiana: LI (Livello Incantatore), scuole in italiano
 6. Descrizione: solo flavour (2-4 frasi), SENZA regole
-7. Dettaglio: massimo 3 bullet atomici
+7. Dettaglio: massimo 3 bullet atomici e specifici
 8. Nota Playtest obbligatoria (1 riga su rischi/abusi)
+
+FORMULE DI CALCOLO:
+- Incantesimo 1/giorno: livello incantesimo × LI × 1.800 gp
+- Incantesimo 3/giorno: livello incantesimo × LI × 5.400 gp
+- Incantesimo illimitato: livello incantesimo × LI × 2.000 gp × 4
+- Bonus fisso +X: bonus² × 1.000 gp (competenza) o bonus² × 2.000 gp (altri)
+- CD Tiro Salvezza: 10 + livello incantesimo + modificatore attributo (min +3)
+- LI minimo: livello incantesimo × 2 - 1 (es: fireball LI 5° → LI 5)
+
+AURA (basata su LI):
+- Debole: LI 1-5
+- Moderata: LI 6-11  
+- Forte: LI 12+
 
 SCUOLE (traduci sempre in italiano):
 - Abjuration → Abjurazione
@@ -85,10 +98,23 @@ TIPI DI BONUS (specifica sempre):
 competenza, circostanziale, schivare, intuizione, potenziamento, fortuna, sacro/profano, morale, resistenza, deviazione
 
 RARITÀ:
-- Comune: diffuso, impatto basso-medio
-- Non comune: tematico/regionale, utility marcata
-- Raro: condizioni/rituali specifici, possibili combo
-- Unico: pezzo narrativo, spesso HR/vincoli`;
+- Comune: diffuso, impatto basso-medio, prezzo < 10.000 gp
+- Non comune: tematico/regionale, utility marcata, 10.000-50.000 gp
+- Raro: condizioni/rituali specifici, possibili combo, 50.000-200.000 gp
+- Unico: pezzo narrativo, spesso HR/vincoli, > 200.000 gp
+
+ESEMPI DI RIFERIMENTO:
+- Ring of Protection +1: 2.000 gp, LI 5°, Abjurazione, bonus deviazione
+- Ring of Feather Falling: 2.200 gp, LI 1°, Trasmutazione, illimitato
+- Cloak of Resistance +1: 1.000 gp, LI 5°, Abjurazione, bonus resistenza
+- Wand of Fireball (CL 5): 11.250 gp, 50 cariche, LI 5°
+
+BILANCIAMENTO:
+- Evita effetti "sempre attivo" troppo potenti
+- Limita usi/giorno per effetti forti
+- Considera azione di attivazione (Standard = più bilanciato)
+- TS e SR devono essere coerenti con l'incantesimo base
+- Dettagli devono specificare limitazioni e interazioni`;
 
   const userMessage = `Crea un oggetto magico Pathfinder 1E basato su: "${userPrompt}"
 
